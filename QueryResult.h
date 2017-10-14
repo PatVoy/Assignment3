@@ -20,12 +20,12 @@
 
 class QueryResult {
 public:
-    QueryResult(const Document & d, const int & s);
+    QueryResult(const Document & d, const double & s);
     friend std::ostream & operator<<(std::ostream & os, 
                                      const QueryResult & queryResult);
 private:
     Document doc;
-    int score;
+    double score;
 };
 
 #endif /* QUERRYRESULT_H */
