@@ -10,7 +10,7 @@ class stopword
         stopword();
         stopword(std::string fileName);
         //bool operator();
-        //overload operator() to return true if the token is in the object’s list, otherwise false
+        //overload operator() to return true if the token is in the objectâ€™s list, otherwise false
 
     private:
         std::string fileName;
