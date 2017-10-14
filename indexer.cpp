@@ -1,58 +1,66 @@
 #include "indexer.h"
+#include "document.h"
+#include "tokenizer.h"
 #include <iostream>
 #include <fstream>
 #include <math.h>
+#include <vector>
+#include <map>
+#include <utility>
 
-using namespace std;
+ // constructor
+Indexer::Indexer()
+{
+  Indexer::numDoc = 0;
+  Indexer::normalized = false;
+}
 
-    size_t maxFileNameLen = 0;
+int Indexer::size()
+{
+   return numDoc;
+}
 
-    // default constructor
-    indexer::indexer()
-    {
-    }
-    // constructor
-    indexer::indexer(string indexFile)
-    {
-        ifstream fin(indexFile.c_str());
-        string fileName;
-        while (getline(fin, fileName)) {
-            // Update max file name length
-            maxFileNameLen = maxFileNameLen > fileName.size() ?
-                maxFileNameLen:fileName.size();
-            fileNames.push_back(fileName);
-            cout << "Names of files in index: " << endl;
-            for ( vector<string>::size_type i = 0; i != fileNames.size(); ++i )
-            cout << fileNames[i] << endl;
+ void Indexer::addDoc()
+{
+   numDoc++;
+}
 
-    }
-    }
-    //returns the number of documents in the index
-    int indexer::size()
-    {
-
-    }
-    //computes the tf-idf weights based on the number N of indexed documents
-    void normalize()
-    {
-        int weight;
-        // N=1;
-        int tf; // we will have to take this from doc obj I think
-        //weight = (1  + log(tf))*(log(N));
-        //idf = log (Nrow)/termCount
-        //tf=?
-    }
-    // queries the index with the provided string
-    void query(string queryWord, int num)
-    {
-
-    }
-    /* By default, it returns the top-10 results, but this can be overridden on a per-query basis (optional second
-    argument). If the index has not been normalized, attempting to query it will throw an exception (adding a
-    new document after normalization also results in a non-normalized index).*/
-    //returns a vector<query_result>, where each result object has a document and its score
-    std::vector<std::string> query()
-    {
-        // what is this score function goodness
+void Indexer::setNormalized(bool ans)
+{
+    normalized = ans;
+}
+//adding a document into the index
+Indexer & operator>>(document& doc, Indexer& indx)
+{
+    indx.setNormalized(false);
+    indx.doc_names.push_back(doc.name());
+    std::map < std::string, std::map < document, std::pair < int, double > > > :: iterator wordCheck;
+    std::string words[] = {"a", "b", "c", "a", "b", "d"};
+    for(int i = 0; i < 6; i++){
+        if(indx.wordMap.empty())
+            indx.wordMap[words[i]].insert({doc, {1, 0}});
+        else
+        {
+            if(indx.wordMap.count(words[i]) == 0)
+                indx.wordMap[words[i]].insert({doc, {1, 0}});
+            else
+                indx.wordMap[words[i]][doc].first += 1;
+        }
     }
 
+}
+
+void Indexer::normalize(){}
+void Indexer::printMatrix(){}
+// just playing around
+int main()
+{
+
+    Indexer indx = Indexer();
+    std::cout << indx.size() << std::endl;
+    indx.addDoc();
+    std::cout << indx.size() << std::endl;
+    document doc = document();
+
+    return 0;
+}
