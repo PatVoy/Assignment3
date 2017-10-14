@@ -94,10 +94,10 @@ const std::vector<QueryResult> query(std::string & query, int & querySize) {
 }
 
 std::istream & operator>>(std::istream * is, Indexer i) {
-    Document doc;
-    is >> doc;
+    std::string docName;
+    is >> docName;
     
-    std::string docName = doc.name();
+    Document doc(docName);
     i.docVector.push_back(doc);
     
     // Extract words from doc content
