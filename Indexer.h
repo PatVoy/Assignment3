@@ -26,13 +26,22 @@
 #include <Tokenizer.h>
 #include <QueryResult.h>
 
+typedef std::map<std::string, std::map<std::string, float> > TwoMap;
+typedef std::map<std::string, 
+                 std::map<std::string, 
+                          std::map<std::string, float> > > ThreeMap;
+
 class Indexer {
 public:
     Indexer();
     void printMatrix();
     void printReducedMatrix();
     const size_t size();
+    const float & weight(const int & freq,
+                         const int & numDoc,
+                         const int & appearances);
     void normalize();
+    const double & similarityScore(TwoMap tokenMap, std::string docName);
     const std::vector<QueryResult> query(std::string & query);
     const std::vector<QueryResult> query(std::string & query, int & querySize);
     friend std::istream & operator>>(std::istream * is,
@@ -41,7 +50,7 @@ public:
                                      const Indexer i);
 private:
     // this is an attribute, so should be hidden
-    std::map<std::string, std::map<Document, std::map<std::string, float> > > wordMap;
+    ThreeMap wordMap;
     std::vector<std::string> docNames; // Same story with this one
     bool normalized;
 };
