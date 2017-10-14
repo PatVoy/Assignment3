@@ -31,7 +31,7 @@ public:
     void printMatrix();
     void printReducedMatrix();
     void normalize();
-    void add(Document & doc);
+    void add(const Document & doc);
     friend std::ostream & operator<<(std::ostream * os,
                                      const Indexer i);
 private:
