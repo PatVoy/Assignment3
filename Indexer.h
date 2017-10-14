@@ -31,7 +31,7 @@ public:
     Indexer();
     void printMatrix();
     void printReducedMatrix();
-    void add(const Document & doc);
+    void add(const Document & doc, const bool norm=false);
     const size_t size();
     void normalize();
     const std::vector<QueryResult> query(std::string & query);
