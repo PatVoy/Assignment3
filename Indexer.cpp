@@ -45,17 +45,17 @@ void Indexer::normalize() {
     int freq = 0;
     int appearances = 0;
     //traverses the map to get all the numbers needed for the weight calculation
-    for (ThreeMap::const_iterator word = this.wordMap.begin();
-         word != this.wordMap.end();
+    for (ThreeMap::const_iterator word = wordMap.begin();
+         word != wordMap.end();
          ++word)
     {
         appearances = word->second.size();
         //traverses inner map to get the frequency of each word/document
         for(TwoMap::const_iterator iter = word->second.begin(); iter != word->second.end(); ++iter){
-                freq = this.wordMap[word][iter]["frequency"];
+                freq = wordMap[word][iter]["frequency"];
 
                 float weight = weight(freq, numDoc, appearances);
-                this.wordMap[word][iter]["weight"] = weight;
+                wordMap[word][iter]["weight"] = weight;
             }
 
     }
@@ -112,6 +112,11 @@ std::istream & operator>>(std::istream * is, Indexer i) {
          ++token) {
         i.wordMap[*token][docName]["frequency"]++;
     }
+}
+
+Document & operator[](int x)
+{
+    return docNames[x-1];
 }
 
 std::ostream & operator<<(std::ostream * os, const Indexer i) {
