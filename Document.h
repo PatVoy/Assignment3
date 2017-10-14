@@ -1,35 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   Document.h
- * Author: petioptrv
- *
- * Created on October 14, 2017, 11:35 AM
- */
-
 #ifndef DOCUMENT_H
 #define DOCUMENT_H
-
 #include <string>
 #include <vector>
-#include <fstream>
+#include <map>
 
-class Document
+class document
 {
-public:
-    Document(const std::string & name);
-    const std::string name();
-    const int size();
-    const std::string content();
-    friend std::ostream & operator<<(std::ostream & os, Document & doc);    
-private:
-    std::string fileName;
-    std::string docContent;
+    public:
+        document();
+        document(std::string fileName);
+        std::string name();
+        int size();
+        std::string content();
+        friend std::ostream &operator<< (std::ostream & os,const document & doc);
+
+    private:
+        std::string nameOfFile;
+        std::string contentOfFile;
+        int sizeOfFile;
+
 };
 
-#endif /* DOCUMENT_H */
+#endif // DOCUMENT_H
 
