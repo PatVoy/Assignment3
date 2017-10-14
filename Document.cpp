@@ -1,51 +1,58 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+#include "document.h"
+#include <iostream>
+#include <fstream>
 
-/* 
- * File:   Document.cpp
- * Author: petioptrv
- * 
- * Created on October 14, 2017, 11:35 AM
- */
+using namespace std;
 
-#include "Document.h"
-
-// Constructor accepts a file name and reads content into document object
-Document::Document(const std::string & name) {
-    fileName = name;  // Store file name
-    std::ifstream file(name.c_str()); // Load the file
-    
-    std::string line;
-    while (getline(file, line)) {
-        docContent += line;
+    // default constructor
+    document::document()
+    {
     }
-}
+    // constructor accepts a file name and reads content into document object
+    document::document(string fileName)
+    {
+        ifstream fin(fileName.c_str());
+        nameOfFile = fileName;
+        string line;
 
-// Returns the file name of the document
-const std::string Document::name()
-{
-    return fileName;
-}
+        while (fin >> line) {
+            contentOfFile += line;
+            contentOfFile += " ";
+        }
+        fin.close();
+    }
+    // returns the file name of the document
+    string document::name()
+    {
+        return nameOfFile;
+    }
+    //size in characters
+    int document::size()
+    {
+            ifstream fin(nameOfFile.c_str());
+            string line;
+            sizeOfFile=0;
 
-// Size in characters
-const int Document::size()
-{
-    return docContent.length();
-}
-// Returns the text of the document
-const std::string Document::content()
-{
-    return docContent;
-}
+            if (fin.is_open())
+            {
+                 while(getline (fin, line)){
+                        sizeOfFile += line.length();
+                }
+            }
+                fin.close();
 
-std::ostream & operator<<(std::ostream & os, Document & doc) {
-    os << "Name: " << doc.name() << "\n";
-    os << "Content:" << "\n" << doc.content();
-    
-    return os;
-}
+                return sizeOfFile;
+    }
+    // returns the text of the document
+   string document::content()
+    {
+        return contentOfFile;
+    }
+    // overload operator<< returns name, size, and content of doc
+    ostream &operator<< (std::ostream & os,const document & doc)
+        {
+          return os << "Name: " << doc.nameOfFile << endl <<
+          "Size: " << doc.sizeOfFile << endl << "Content: " << doc.contentOfFile << endl;
+        }
 
 
