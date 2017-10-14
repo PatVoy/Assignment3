@@ -15,6 +15,7 @@
 #define QUERYRESULT_H
 
 #include <iostream>
+
 #include <Document.h>
 
 class QueryResult {
