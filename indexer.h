@@ -2,24 +2,26 @@
 #define INDEXER_H
 #include <string>
 #include <vector>
+#include <map>
+#include "document.h"
+#include "tokenizer.h"
+#include <utility>
 
-
-class indexer
+class Indexer
 {
+    friend Indexer & operator>>(document&, Indexer&);
     public:
-        indexer();
-        indexer(std::string indexFile);
+        Indexer();
         int size();
+        void addDoc();
+        void printMatrix();
         void normalize();
-        void query(std::string queryWord,int num);
-        std::vector<std::string> query();
-
-    private:
-        int N;
-        //friend array<string> we want to be able to access its indexed documents a la idx[2], maybe through friend or sth
-        std::vector<std::string> fileNames;
-        size_t maxFileNameLen;
-
+        void setNormalized(bool ans);
+        std::vector<std::string> doc_names;
+        std::map < std::string, std::map < document, std::pair < int, double > > > wordMap;
+    private:                   // begin private section
+        int numDoc;
+        bool normalized;
 };
 
 #endif // INDEXER_H
