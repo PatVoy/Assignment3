@@ -24,7 +24,7 @@ Tokenizer::Tokenizer() {
     }
 }
 
-Tokenizer::Tokenizer(std::string & fileName) {
+Tokenizer::Tokenizer(const std::string & fileName) {
     std::ifstream file(fileName.c_str());
     
     std::string line;
