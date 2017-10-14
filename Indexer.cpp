@@ -59,36 +59,33 @@ void Indexer::normalize() {
     normalized = true;
 }
 
-// I thought about it and I don't think we can overload >> operator
-// because it would have to return an istream (you can only overload if
-// the return type and arguments are the same)
-// which does not fit with the functionality of this method, so
-// an add function might serve us better here.
-void Indexer::add(const Document & doc) {
-    normalized = false;
-    std::string docName = doc.name();  // The reason I save the value to a local variable is because this prevents us from having to make a method call (i.e. doc.name()) everytime we need the name of the document, which is needed on each iteration while adding words to the database below – this is just faster
-    docNames.push_back(docName);
-
-    // Extract words from doc content
-    Tokenizer tokenizer();  // Create tokenizer object
-    // Feed the content of the doc to the tokenizer overloaded braket operator
-    // to get a vector of words in return
-    std::vector<std::string> tokens = tokenizer(doc.content());
-
-    // Travers the vector of tokens and add it to the data structure
-    for (std::vector<std::string>::const_iterator token = tokens.begin();
-         token != tokens.end();
-         ++token) {
-        wordMap[*token][docName]["frequency"]++;
-    }
-}
-
 const std::vector<QueryResult> query(std::string & query) {
 
 }
 
 const std::vector<QueryResult> query(std::string & query, int & querySize) {
 
+}
+
+std::istream & operator>>(std::istream * is, Indexer i) {
+    Document doc;
+    is >> doc;
+    
+    std::string docName = doc.name();
+    i.docVector.push_back(doc);
+    
+    // Extract words from doc content
+    Tokenizer tokenizer();  // Create tokenizer object
+    // Feed the content of the doc to the tokenizer overloaded bracket operator
+    // to get a vector of words in return
+    std::vector<std::string> tokens = tokenizer(doc.content());
+    
+    // Traverse the vector of tokens and add it to the data structure
+    for (std::vector<std::string>::const_iterator token = tokens.begin();
+         token != tokens.end();
+         ++token) {
+        i.wordMap[*token][docName]["frequency"]++;
+    }
 }
 
 std::ostream & operator<<(std::ostream * os, const Indexer i) {
