@@ -31,7 +31,7 @@ void Indexer::printReducedMatrix() {
 
 float weight(int freq, int numDoc, int appearances)
 {
-    return (1 + log(freq))*(numDoc/appearances);
+    return (1 + log(freq))*log(numDoc/appearances);
 }
 
 void Indexer::normalize() {
