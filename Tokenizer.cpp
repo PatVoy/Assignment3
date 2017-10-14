@@ -5,29 +5,71 @@
  */
 
 /* 
- * File:   Tokenizer.h
+ * File:   Tokenizer.cpp
  * Author: petioptrv
- *
+ * 
  * Created on October 14, 2017, 11:58 AM
  */
 
-#ifndef TOKENIZER_H
-#define TOKENIZER_H
+#include "Tokenizer.h"
 
-#include <string>
-#include <fstream>
-#include <vector>
+Tokenizer::Tokenizer() {
+    std::string fileName = "delimiters.txt";
+    std::ifstream file(fileName.c_str());
+    
+    // Extract file content and store in delimiter variable
+    std::string line;
+    while (getline(file, line)) {
+        delimiters += line;
+    }
+}
 
-class Tokenizer {
-public:
-    Tokenizer();
-    Tokenizer(std::string & fileName);
-    const std::string getDelimiters();
-    std::vector<std::string> operator()(std::string & inputStr);
-    friend std::ostream & operator<<(std::ostream & os, Tokenizer & tokenizer);
-private:
-    std::string delimiters;
-};
+Tokenizer::Tokenizer(std::string & fileName) {
+    std::ifstream file(fileName.c_str());
+    
+    std::string line;
+    while (getline(file, line)) {
+        delimiters += line;
+    }
+}
 
-#endif /* TOKENIZER_H */
+const std::string Tokenizer::getDelimiters() {
+    return delimiters;
+}
 
+std::vector<std::string> Tokenizer::operator()(std::string & inputStr) {
+    std::vector<std::string> tokens; // Stores the tokens
+    
+    size_t currPos = 0;
+    size_t newPos;
+    std::string nextWord = "";
+    
+    // Extract each word character by character
+    for (std::string::const_iterator character = inputStr.begin();
+        character != inputStr.end();
+        ++character) {
+        // Compare character to delimiters to see if there is a match
+        if (delimiters.find_first_of(*character, currPos) == 
+                std::string::npos) {
+            nextWord += std::tolower(*character);
+        } else {
+            if (nextWord != "") {  // If word is not empty
+                tokens.push_back(nextWord);  // Insert word into vector
+                nextWord = "";  // Reset string
+            }
+        }
+    }
+    
+    // Add the last word
+    if (nextWord != "") {  // If word is not empty
+        tokens.push_back(nextWord);  // Insert word into vector
+    }
+    
+    return tokens;
+}
+
+std::ostream & operator<<(std::ostream & os, Tokenizer & tokenizer) {
+    os << tokenizer.delimiters;
+    
+    return os;
+}
