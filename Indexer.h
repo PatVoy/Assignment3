@@ -1,3 +1,16 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/* 
+ * File:   Indexer.h
+ * Author: petioptrv
+ *
+ * Created on October 14, 2017, 1:31 PM
+ */
+
 #ifndef INDEXER_H
 #define INDEXER_H
 
@@ -11,19 +24,21 @@
 #include "Document.h"
 #include "Tokenizer.h"
 
-class Indexer
-{
+class Indexer {
 public:
     Indexer();
-    int size();
+    const int size();
     void printMatrix();
-    void printRedicedMatrix();
+    void printReducedMatrix();
     void normalize();
-    void add(document::document & doc);
-private:                   // begin private section
-    std::map < std::string, std::map < document, std::map <std::string, double > > > wordMap;  // This is an attribute, so should be hidden
-    std::vector<std::string> doc_names;  // Same story with this one
+    void add(Document::Document & doc);
+    friend std::ostream & operator<<(std::ostream * os,
+                                     const Indexer i);
+private:
+    // this is an attribute, so should be hidden
+    std::map<std::string, std::map<Document, std::map<std::string, float> > > wordMap;
+    std::vector<std::string> docNames; // Same story with this one
     bool normalized;
 };
 
-#endif // INDEXER_H
+#endif /* INDEXER_H */
