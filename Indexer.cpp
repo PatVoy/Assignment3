@@ -30,7 +30,9 @@ void Indexer::printReducedMatrix() {
 }
 
 void Indexer::normalize() {
-
+    
+    
+    normalized = true;  // We can flag the object as normalized in here
 }
 
 // I thought about it and I don't think we can overload >> operator 
@@ -39,8 +41,14 @@ void Indexer::normalize() {
 // which does not fit with the functionality of this method, so
 // an add function might serve us better here.
 void Indexer::add(const Document & doc) {
+    // We've added a document, so the object is no longer normalized
     normalized = false;
-    std::string docName = doc.name();  // The reason I save the value to a local variable is because this prevents us from having to make a method call (i.e. doc.name()) everytime we need the name of the document, which is needed on each iteration while adding words to the database below – this is just faster
+    // The reason the value is saved to a local variable is because this 
+    // prevents us from having to make a method call (i.e. doc.name()) 
+    // every time we need the name of the document, which is needed on each 
+    // iteration while adding words to the database below – method calls are
+    // costly, so this is just a faster way to do it
+    std::string docName = doc.name();
     docNames.push_back(docName);
     
     // Extract words from doc content
