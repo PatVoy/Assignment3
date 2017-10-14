@@ -26,7 +26,7 @@ void Indexer::printMatrix() {
 }
 
 void Indexer::printReducedMatrix() {
-
+    
 }
 
 void Indexer::normalize() {
@@ -40,7 +40,7 @@ void Indexer::normalize() {
 // the return type and arguments are the same)
 // which does not fit with the functionality of this method, so
 // an add function might serve us better here.
-void Indexer::add(const Document & doc) {
+void Indexer::add(const Document & doc, const bool norm) {
     // We've added a document, so the object is no longer normalized
     normalized = false;
     // The reason the value is saved to a local variable is because this 
@@ -53,15 +53,19 @@ void Indexer::add(const Document & doc) {
     
     // Extract words from doc content
     Tokenizer tokenizer();  // Create tokenizer object
-    // Feed the content of the doc to the tokenizer overloaded braket operator
+    // Feed the content of the doc to the tokenizer overloaded bracket operator
     // to get a vector of words in return
     std::vector<std::string> tokens = tokenizer(doc.content());
     
-    // Travers the vector of tokens and add it to the data structure
+    // Traverse the vector of tokens and add it to the data structure
     for (std::vector<std::string>::const_iterator token = tokens.begin();
          token != tokens.end();
          ++token) {
         wordMap[*token][docName]["frequency"]++;
+    }
+    
+    if (norm) {
+        normalize();
     }
 }
 
