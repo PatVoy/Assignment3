@@ -48,6 +48,8 @@ public:
                                      Indexer & i);
     friend std::ostream & operator<<(std::ostream * os,
                                      const Indexer i);
+    
+    friend Document & operator[](int x);
 private:
     // this is an attribute, so should be hidden
     ThreeMap wordMap;
