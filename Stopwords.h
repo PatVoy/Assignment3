@@ -23,8 +23,7 @@ class Stopwords
 {
 public:
     Stopwords();
-    Stopwords(std::string fileName);
-    void insertWord(std::string word);  // Insert new word into stop word vector
+    Stopwords(const std::string & fileName);
     // Returns true if a word is found in stopword list
     const bool operator()(const std::string & word);
     friend std::ostream & operator<<(std::ostream & os, const Stopwords & st);
