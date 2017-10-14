@@ -20,17 +20,20 @@ int Indexer::size()
    return numDoc;
 }
 
- void Indexer::addDoc()
+void Indexer::printMatrix() {}
+
+void Indexer::printMatrixReduced() {}
+
+void Indexer::normalize()
 {
-   numDoc++;
+    normalized = ans;  // Flag matrix as normalized
 }
 
 void Indexer::setNormalized(bool ans)
 {
-    normalized = ans;
 }
 //adding a document into the index
-Indexer & operator>>(document& doc, Indexer& indx)
+void add(document::)
 {
     indx.setNormalized(false);
     indx.doc_names.push_back(doc.name());
@@ -47,20 +50,6 @@ Indexer & operator>>(document& doc, Indexer& indx)
                 indx.wordMap[words[i]][doc].first += 1;
         }
     }
-
-}
-
-void Indexer::normalize(){}
-void Indexer::printMatrix(){}
-// just playing around
-int main()
-{
-
-    Indexer indx = Indexer();
-    std::cout << indx.size() << std::endl;
-    indx.addDoc();
-    std::cout << indx.size() << std::endl;
-    document doc = document();
-
-    return 0;
+    
+    numDoc++;  // Increment doc counter
 }
