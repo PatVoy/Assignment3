@@ -27,7 +27,7 @@
 class Indexer {
 public:
     Indexer();
-    const int size();
+    const size_t size();
     void printMatrix();
     void printReducedMatrix();
     void normalize();
