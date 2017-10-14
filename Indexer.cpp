@@ -114,9 +114,9 @@ std::istream & operator>>(std::istream * is, Indexer i) {
     }
 }
 
-Document & operator[](int x)
+const Document & operator[](const int x)
 {
-    return docNames[x-1];
+    return docNames[x];
 }
 
 std::ostream & operator<<(std::ostream * os, const Indexer i) {
