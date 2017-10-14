@@ -1,26 +1,30 @@
-//
-//  QueryResult.hpp
-//  
-//
-//  Created by Petio Petrov on 2017-10-13.
-//
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/* 
+ * File:   QuerryResult.h
+ * Author: petioptrv
+ *
+ * Created on October 14, 2017, 1:06 PM
+ */
 
 #ifndef QUERYRESULT_H
 #define QUERYRESULT_H
 
 #include <iostream>
-#include <document.h>
+#include <Document.h>
 
-class QueryResult
-{
+class QueryResult {
 public:
-    QueryResult(document & d, int & s);
-    friend std::ostream & operator<< (std:ostream & os,
-                                      const QueryResult & queryResult);
-
+    QueryResult(const Document & d, const int & s);
+    friend std::ostream & operator<<(std::ostream & os, 
+                                     const QueryResult & queryResult);
 private:
-    document doc;
+    Document doc;
     int score;
-}
+};
 
-#endif /* QueryResult_hpp */
+#endif /* QUERRYRESULT_H */
