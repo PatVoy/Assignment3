@@ -28,7 +28,80 @@ const size_t Indexer::size() {
 }
 
 void Indexer::printMatrix() {
+  int maxWordLen=0;
+    int maxFileNameLen=0;
 
+    for (ThreeMap::iterator
+            word = this.wordMap.begin();                           // THIS LOOKS HORRIBLE!!!!
+         word != this.wordMap.end();
+         ++word)
+    {
+            if(word->first.length() > maxWordLen)
+                maxWordLen = word->first.length();
+    }
+
+    for (int i = 0; i < docNames.size(); i++)
+    {
+        if(docNames[i].name().length() > maxFileNameLen)
+            maxFileNameLen = docNames[i].name().length();
+    }
+
+
+
+    // Keeps track of the totals for the full matrix
+    map<string,int> fullWordTotals;
+
+    int indexColumnLength = 1 + 1 + maxWordLen + 1;
+    int dataColumnLength = 1 + 1 + maxFileNameLen + 1;
+    int separationLineLength = indexColumnLength +
+                               (dataColumnLength * docNames.size()) + 1;
+    string separationLine(separationLineLength, '-');
+    string leftBorder = "| ";
+    string rightBorder = " |";
+    string midBorder = " | ";
+
+    // MATRIX HEADER
+
+    cout << "FULL MATRIX" << endl;
+    cout << separationLine << endl;
+    cout << leftBorder << setw(maxWordLen) << left << "Dictionary";
+    // Print out the file names
+    for (vector<Document>::iterator fileName = docNames.begin();
+            fileName != docNames.end();
+            ++fileName) {
+        cout << setw(3) << midBorder
+                << setw(maxFileNameLen) << left << *fileName.name();
+    }
+    cout << rightBorder << "\n" << separationLine << endl;
+
+    // MATRIX BODY
+
+    // Print each row
+    for (ThreeMap::iterator word = wordMap.begin();
+         word != wordMap.end();
+         ++word) {
+        cout << leftBorder << setw(maxWordLen) << left << word->first;
+
+        // Print each column for that row
+        for (vector<Document>::iterator fileName = docNames.begin();
+                fileName != docNames.end();
+                ++fileName) {
+            cout << setw(3) << midBorder
+                    << setw(maxFileNameLen) << right
+                    << word->second->second["frequency"] << " | " << word->second->second["weight"];
+            fullWordTotals[*fileName.name()] += word->second->second->["frequency"];
+        }
+        cout << setw(2) << rightBorder << endl;  // Close last column
+    }
+    cout << separationLine << "\n" << setw(2) << leftBorder
+            << setw(maxWordLen) << left << "Total";
+    for (map<string,int>::iterator fileName = fullWordTotals.begin();
+            fileName != fullWordTotals.end();
+            ++fileName) {
+        cout << setw(3) << midBorder << setw(maxFileNameLen) << right
+                << fileName->second;
+    }
+    cout << setw(2) << rightBorder << "\n" << separationLine << "\n\n" << endl;
 }
 
 void Indexer::printReducedMatrix() {
@@ -37,7 +110,7 @@ void Indexer::printReducedMatrix() {
 
 float weight(int freq, int numDoc, int appearances)
 {
-    return (1 + log(freq))*log(numDoc/appearances);
+    return roundf((1 + log(freq))*log(numDoc/appearances)* 100) / 100;
 }
 
 void Indexer::normalize() {
