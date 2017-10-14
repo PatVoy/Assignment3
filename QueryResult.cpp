@@ -13,7 +13,7 @@
 
 #include "QueryResult.h"
 
-QueryResult::QueryResult(const Document & d, const int & s) : doc(d), score(s) {
+QueryResult::QueryResult(const Document & d, const double & s) : doc(d), score(s) {
 }
 
 std::ostream & operator<<(std::ostream & os, const QueryResult & queryResult) {
