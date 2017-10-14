@@ -5,30 +5,53 @@
  */
 
 /* 
- * File:   Stopwords.h
+ * File:   Stopwords.cpp
  * Author: petioptrv
- *
+ * 
  * Created on October 14, 2017, 11:25 AM
  */
 
-#ifndef STOPWORDS_H
-#define STOPWORDS_H
+#include "Stopwords.h"
 
-#include <string>
-#include <vector>
-#include <list>
-#include <fstream>
+// Default constructor
+Stopwords::Stopwords() {
+    std::string fileName = "stopwords.txt";
+    std::ifstream fin(fileName.c_str());
+    
+    std::string word;
+    // insert words into list
+    while (fin >> word)
+        vectorStopwords.push_back(word);
+    fin.close();
+}
 
-class Stopwords
-{
-public:
-    Stopwords();
-    Stopwords(const std::string & fileName);
-    // Returns true if a word is found in stopword list
-    const bool operator()(const std::string & word);
-    friend std::ostream & operator<<(std::ostream & os, const Stopwords & st);
-private:
-    std::vector<std::string> vectorStopwords;
-};
+// Constructor reads the stopword list from this file
+Stopwords::Stopwords(const std::string & fileName) {
+    std::ifstream fin(fileName.c_str());
+    
+    std::string word;
+    // insert words into list
+    while (fin >> word)
+        vectorStopwords.push_back(word);
+    fin.close();
+}
 
-#endif /* STOPWORDS_H */
+const bool Stopwords::operator() (const std::string & word) {
+    for (std::vector<std::string>:: const_iterator i = vectorStopwords.begin();
+         i != vectorStopwords.end();
+         ++i)
+        if (word == *i) return true;
+    return false;
+}
+
+// overload operator<< returns stopword list content
+std::ostream &operator<< (std::ostream & os,const Stopwords & st) {
+    // Cannot use endl here because endl flushes the buffer
+    os << "Stopwords: " << "\n";
+    for (std::vector<std::string>::const_iterator i = st.vectorStopwords.begin();
+         i != st.vectorStopwords.end();
+         ++i)
+        os << *i << "\n";
+    return os;
+}
+
