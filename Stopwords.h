@@ -1,35 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   Stopwords.h
- * Author: petioptrv
- *
- * Created on October 14, 2017, 11:25 AM
- */
-
 #ifndef STOPWORDS_H
 #define STOPWORDS_H
-
 #include <string>
 #include <vector>
 #include <list>
-#include <fstream>
 
-class Stopwords
+class stopwords
 {
-public:
-    Stopwords();
-    Stopwords(const std::string & fileName);
-    // Returns true if a word is found in stopword list
-    const bool operator()(const std::string & word);
-    friend std::ostream & operator<<(std::ostream & os, const Stopwords & st);
-private:
-    std::vector<std::string> vectorStopwords;
+    public:
+        stopwords();
+        stopwords(std::string fileName);
+        friend std::ostream &operator<< (std::ostream & os,const stopword & st);
+        bool operator() (const std::string & token) // returns if a token is found in stopword list
+        {
+         for (std::list<std::string>:: const_iterator i = listStopwords.begin(); i != listStopwords.end(); ++i)
+         if (token == *i) return true;
+         return false;
+        }
+
+    private:
+        std::string fileName;
+        std::string token;
+        std::list<std::string> listStopwords;
+
 };
 
-#endif /* STOPWORDS_H */
+#endif // STOPWORD_H
 
