@@ -31,11 +31,12 @@ public:
     Indexer();
     void printMatrix();
     void printReducedMatrix();
-    void add(const Document & doc, const bool norm=false);
     const size_t size();
     void normalize();
     const std::vector<QueryResult> query(std::string & query);
     const std::vector<QueryResult> query(std::string & query, int & querySize);
+    friend std::istream & operator>>(std::istream * is,
+                                     Indexer & i);
     friend std::ostream & operator<<(std::ostream * os,
                                      const Indexer i);
 private:
