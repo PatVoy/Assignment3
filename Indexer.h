@@ -21,17 +21,21 @@
 #include <utility>
 #include <fstream>
 #include <iostream>
-#include "Document.h"
-#include "Tokenizer.h"
+
+#include <Document.h>
+#include <Tokenizer.h>
+#include <QueryResult.h>
 
 class Indexer {
 public:
     Indexer();
-    const size_t size();
     void printMatrix();
     void printReducedMatrix();
-    void normalize();
     void add(const Document & doc);
+    const size_t size();
+    void normalize();
+    const std::vector<QueryResult> query(std::string & query);
+    const std::vector<QueryResult> query(std::string & query, int & querySize);
     friend std::ostream & operator<<(std::ostream * os,
                                      const Indexer i);
 private:
@@ -42,3 +46,4 @@ private:
 };
 
 #endif /* INDEXER_H */
+
