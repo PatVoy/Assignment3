@@ -13,6 +13,12 @@
 
 #include "Indexer.h"
 
+typedef std::map<std::string, float> OneMap;
+typedef std::map<std::string, std::map<std::string, float> > TwoMap;
+typedef std::map<std::string, 
+                 std::map<std::string, 
+                          std::map<std::string, float> > > ThreeMap;
+
 Indexer::Indexer() {
     normalized = false;
 }
@@ -39,16 +45,13 @@ void Indexer::normalize() {
     int freq = 0;
     int appearances = 0;
     //traverses the map to get all the numbers needed for the weight calculation
-    for (std::map<std::string, std::map<Document,
-            std::map<std::string, float> > >::const_iterator
-            word = this.wordMap.begin();                           // THIS LOOKS HORRIBLE!!!!
+    for (ThreeMap::const_iterator word = this.wordMap.begin();
          word != this.wordMap.end();
          ++word)
     {
         appearances = word->second.size();
         //traverses inner map to get the frequency of each word/document
-        for(std::map<Document, std::map<std::string, float> >::const_iterator
-            iter = word->second.begin(); iter != word->second.end(); ++iter){
+        for(TwoMap::const_iterator iter = word->second.begin(); iter != word->second.end(); ++iter){
                 freq = this.wordMap[word][iter]["frequency"];
 
                 float weight = weight(freq, numDoc, appearances);
@@ -57,6 +60,29 @@ void Indexer::normalize() {
 
     }
     normalized = true;
+}
+
+const double & Indexer::similarityScore(TwoMap tokenMap,
+                              std::string docName) {
+    // Make sure the passed map is of same length as the word map
+    assert (tokenMap.size() == wordMap.size() && 
+            "The two maps are not of equal size");
+    
+    // Calculate the score
+    double num = 0;
+    double denomLeft = 0;
+    double denomRight = 0;
+    for (TwoMap::const_iterator token = tokenMap.begin();
+            token != tokenMap.end();
+            ++token) {
+        float tokenWeight = token->second["weight"];
+        float wordWeight = wordMap[token->first][docName]["weight"];
+        num += tokenWeight * wordWeight;
+        denomLeft += pow(tokenWeight, 2);
+        denomRight += pow(wordWeight, 2);
+    }
+    
+    return num/(sqrt(denomLeft) * sqrt(denomRight));
 }
 
 const std::vector<QueryResult> query(std::string & query) {
