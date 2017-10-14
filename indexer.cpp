@@ -1,12 +1,4 @@
-#include "indexer.h"
-#include "document.h"
-#include "tokenizer.h"
-#include <iostream>
-#include <fstream>
-#include <math.h>
-#include <vector>
-#include <map>
-#include <utility>
+#include "Indexer.h"  // This should be the only import in here
 
  // constructor
 Indexer::Indexer()

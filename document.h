@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 
-class document
+class Document
 {
     public:
         document();

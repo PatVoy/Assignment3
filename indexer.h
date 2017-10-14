@@ -4,9 +4,12 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <math.h>
 #include <utility>
+#include <fstream>
+#include <iostream>
 #include "Document.h"
-#include "tokenizer.h"
+#include "Tokenizer.h"
 
 class Indexer
 {
